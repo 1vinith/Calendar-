@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indian Standard Time Calendar</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 80%;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 20px;
+      width: 14.2857%;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    #time-box {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+    .current-day {
+      background-color: #b3d9ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Indian Standard Time Calendar</h1>
+
+  <table id="calendar"></table>
+  <div id="time-box"></div>
+
+  <script>
+    function updateDateTime() {
+      // Get current date and time in IST
+      const now = new Date();
+      const options = {
+        timeZone: 'Asia/Kolkata',
+        hour12: false,
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      };
+      const istDateTime = now.toLocaleString('en-US', options);
+
+      // Display date and time in the time-box
+      document.getElementById('time-box').textContent = istDateTime.split(', ')[0]; // Display only time
+
+      // Display calendar with the current day marked
+      const calendar = document.getElementById('calendar');
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      const currentDay = now.getDate();
+      const currentMonth = now.getMonth() + 1;
+
+      let calendarHTML = '<tr>';
+      for (let i = 1; i <= daysInMonth; i++) {
+        calendarHTML += `<th>${i}</th>`;
+      }
+      calendarHTML += '</tr><tr>';
+
+      for (let i = 1; i <= daysInMonth; i++) {
+        const isCurrentDay = i === currentDay;
+        const cellClass = isCurrentDay ? 'current-day' : '';
+        calendarHTML += `<td class="${cellClass}">${i}</td>`;
+      }
+
+      calendarHTML += '</tr>';
+      calendar.innerHTML = calendarHTML;
+    }
+
+    // Update date and time every second
+    setInterval(updateDateTime, 1000);
+
+    // Initial call to display date and time immediately
+    updateDateTime();
+  </script>
+
+</body>
+</html>
